@@ -11,22 +11,16 @@
         }
         #noButton {
             transition: all 0.2s ease;
-            position: relative;
         }
         body {
             touch-action: manipulation;
         }
     </style>
 </head>
-<body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden" onclick="startMusic()">
+<body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden" onclick="playInitial()">
     
-    <audio id="romanticMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
-    </audio>
-    
-    <audio id="queenMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-    </audio>
+    <div id="player-romantic" style="display:none"></div>
+    <div id="player-queen" style="display:none"></div>
 
     <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
         <img id="imageDisplay" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Bear" class="mx-auto mb-6 w-48 rounded-lg">
@@ -43,21 +37,33 @@
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const romantic = document.getElementById('romanticMusic');
-        const queen = document.getElementById('queenMusic');
+        let playerRomantic, playerQueen;
         let musicStarted = false;
 
-        // Inicia música romántica al primer clic o interacción
-        function startMusic() {
-            if (!musicStarted) {
-                romantic.play().catch(e => console.log("Audio blocked by browser"));
+        function onYouTubeIframeAPIReady() {
+            // Photograph - Ed Sheeran
+            playerRomantic = new YT.Player('player-romantic', {
+                height: '0', width: '0', videoId: 'nSDgHBxUbVQ',
+                events: { 'onReady': (e) => e.target.setVolume(100) }
+            });
+            // We Are The Champions - Queen
+            playerQueen = new YT.Player('player-queen', {
+                height: '0', width: '0', videoId: '04854XqcfCY',
+                events: { 'onReady': (e) => e.target.setVolume(100) }
+            });
+        }
+
+        function playInitial() {
+            if (!musicStarted && playerRomantic) {
+                playerRomantic.playVideo();
                 musicStarted = true;
             }
         }
 
         function moveButton() {
-            startMusic(); 
+            playInitial();
             const noBtn = document.getElementById('noButton');
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
@@ -77,9 +83,8 @@
         }
 
         function handleYesClick() {
-            // Cambio de ambiente: De melódico a Queen
-            romantic.pause();
-            queen.play();
+            if(playerRomantic) playerRomantic.stopVideo();
+            if(playerQueen) playerQueen.playVideo();
 
             document.getElementById('question').innerText = "Excelente, tu si sabes elegir bien 🫡";
             document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
