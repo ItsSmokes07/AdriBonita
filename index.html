@@ -38,14 +38,14 @@
     </div>
 
     <script>
-        // Función para activar la música al primer toque
-        function playMusic() {
-            const music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Esperando interacción para sonar"));
+        const music = document.getElementById('bgMusic');
+
+        function playInitialMusic() {
+            music.play().catch(() => {});
         }
 
         function moveButton() {
-            playMusic(); // Intenta sonar la música cuando intenta darle al No
+            playInitialMusic();
             const noBtn = document.getElementById('noButton');
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
@@ -66,21 +66,24 @@
         }
 
         function handleYesClick() {
-            playMusic(); // Asegura que la música suene al aceptar
-            document.getElementById('question').innerText = "YAY!!! See you on the 14th! ❤️";
-            
-            // Nueva imagen de victoria (Gatitos tiernos)
+            // Cambiar música a una más alegre al aceptar
+            music.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3";
+            music.play();
+
+            document.getElementById('question').innerHTML = "Excelente, tu si sabes elegir bien 🫡";
             document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
             
             document.getElementById('noButton').style.display = 'none';
             
             const btn = document.getElementById('yesButton');
-            // Nuevo mensaje final solicitado
             btn.innerText = "Nos vemos el 14 mi amor:)";
             btn.classList.replace('bg-green-500', 'bg-pink-500');
             btn.style.fontSize = "22px";
             btn.onclick = null;
         }
+
+        // Activar música con cualquier interacción inicial
+        document.body.addEventListener('click', playInitialMusic, { once: true });
     </script>
 </body>
 </html>
