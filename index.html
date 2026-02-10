@@ -9,76 +9,39 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-
-body {
-transition: background 0.8s;
-overflow: hidden;
-}
-
-/* fondo día */
-.day-bg {
-background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
-}
-
-/* fondo noche */
-.night-bg {
-background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-color:white;
-}
-
-.heart {
-position:absolute;
-animation: floatUp linear infinite;
-opacity:0.7;
-}
-
-@keyframes floatUp {
-from {transform: translateY(100vh);}
-to {transform: translateY(-10vh);}
-}
-
-.fade {
-animation: fadeIn 0.8s ease-in-out;
-}
-
-@keyframes fadeIn {
-from {opacity:0; transform:scale(0.9);}
-to {opacity:1; transform:scale(1);}
-}
-
+body { overflow:hidden; }
+.day-bg { background: linear-gradient(180deg,#ffafbd 0%,#ffc3a0 100%); }
+.heart { position:absolute; animation: floatUp linear infinite; }
+@keyframes floatUp { from{transform:translateY(100vh);} to{transform:translateY(-10vh);} }
 </style>
 </head>
 
 <body id="body" class="day-bg h-screen flex items-center justify-center">
 
-<!-- players -->
 <div id="player-romantic" style="display:none"></div>
 <div id="player-queen" style="display:none"></div>
-
 <div id="hearts"></div>
 
-<div id="card" class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 fade">
+<div id="card" class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4">
 
 <img id="imageDisplay"
 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif"
 class="mx-auto mb-6 w-48 rounded-lg">
 
-<h1 id="question" class="text-3xl font-bold text-pink-600 mb-4">
+<h1 id="question" class="text-3xl font-bold text-pink-600 mb-10">
 Adri, Will you be my Valentine? ❤️
 </h1>
-
-<p class="mb-6 text-lg" id="countdown"></p>
 
 <div class="flex gap-6 justify-center">
 
 <button id="yesButton"
-class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg transform transition hover:scale-110"
+class="bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-xl"
 onclick="handleYesClick()">
 Sí, eres fino
 </button>
 
 <button id="noButton"
-class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg"
+class="bg-red-500 text-white font-bold py-3 px-8 rounded-lg text-xl"
 onmouseover="moveButton()" onclick="moveButton()">
 No deseyo
 </button>
@@ -91,64 +54,42 @@ No deseyo
 <script>
 
 let playerRomantic, playerQueen;
-
-/* MODO NOCHE AUTOMÁTICO */
-const hour = new Date().getHours();
-if(hour >= 19 || hour <= 6){
-document.getElementById("body").classList.remove("day-bg");
-document.getElementById("body").classList.add("night-bg");
-}
-
-/* CONTADOR AL 14 */
-function updateCountdown(){
-const target = new Date("Feb 14, 2026 00:00:00").getTime();
-const now = new Date().getTime();
-const diff = target - now;
-
-if(diff < 0){
-document.getElementById("countdown").innerText="Hoy es nuestro día ❤️";
-return;
-}
-
-const days = Math.floor(diff / (1000*60*60*24));
-const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-
-document.getElementById("countdown").innerText =
-"Faltan " + days + " días y " + hours + " horas para el 14 💘";
-}
-
-setInterval(updateCountdown,1000);
-updateCountdown();
+let musicUnlocked = false;
 
 /* YOUTUBE */
 function onYouTubeIframeAPIReady() {
 
 playerRomantic = new YT.Player('player-romantic', {
-height:'0', width:'0', videoId:'nSDgHBxUbVQ',
-playerVars:{autoplay:1, controls:0},
-events:{ 'onReady': e=>{e.target.setVolume(100); e.target.playVideo();}}
+height:'0', width:'0',
+videoId:'nSDgHBxUbVQ',
+playerVars:{ autoplay:1, controls:0, mute:1 },
+events:{
+'onReady': e=>{
+e.target.playVideo(); // empieza en mute automáticamente
+}
+}
 });
 
 playerQueen = new YT.Player('player-queen', {
-height:'0', width:'0', videoId:'04854XqcfCY',
-playerVars:{autoplay:0, controls:0},
-events:{ 'onReady': e=> e.target.setVolume(100)}
+height:'0', width:'0',
+videoId:'04854XqcfCY',
+playerVars:{ autoplay:0, controls:0 },
+events:{
+'onReady': e=> e.target.setVolume(100)
+}
 });
 }
 
-/* CORAZONES */
-setInterval(()=>{
-const heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="❤️";
-heart.style.left=Math.random()*100+"vw";
-heart.style.fontSize=(15+Math.random()*20)+"px";
-heart.style.animationDuration=(3+Math.random()*4)+"s";
-document.getElementById("hearts").appendChild(heart);
-setTimeout(()=>heart.remove(),7000);
-},400);
+/* ACTIVAR SONIDO AL PRIMER CLICK */
+document.addEventListener("click", ()=>{
+if(!musicUnlocked && playerRomantic){
+playerRomantic.unMute();
+playerRomantic.setVolume(100);
+musicUnlocked = true;
+}
+});
 
-/* BOTÓN NO */
+/* BOTÓN NO ESCAPA */
 function moveButton(){
 const noBtn=document.getElementById("noButton");
 noBtn.style.position="absolute";
@@ -158,19 +99,23 @@ noBtn.style.top=Math.random()*80+"vh";
 
 /* CONFETTI */
 function launchConfetti(){
-confetti({particleCount:200, spread:100, origin:{y:0.6}});
+confetti({particleCount:180,spread:100,origin:{y:0.6}});
 }
 
 /* CLICK SI */
 function handleYesClick(){
 
-playerRomantic.stopVideo();
+if(playerRomantic) playerRomantic.stopVideo();
+
+if(playerQueen){
 playerQueen.playVideo();
+playerQueen.unMute();
+playerQueen.setVolume(100);
+}
 
 launchConfetti();
 
 document.getElementById("question").innerText="Sabía que dirías que sí ❤️";
-document.getElementById("countdown").innerText="Entonces… el 14 es una cita 💘";
 
 document.getElementById("imageDisplay").src=
 "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
@@ -181,16 +126,6 @@ const btn=document.getElementById("yesButton");
 btn.innerText="Nos vemos el 14 mi amor ❤️";
 btn.classList.replace("bg-green-500","bg-pink-500");
 btn.onclick=null;
-
-/* carta final */
-setTimeout(()=>{
-const card=document.getElementById("card");
-card.innerHTML+=`
-<p class="mt-6 text-lg fade">
-No es solo una salida…<br><br>
-es una excusa más para seguir eligiéndote ❤️
-</p>`;
-},1500);
 }
 
 </script>
