@@ -44,7 +44,7 @@ body { overflow:hidden; }
 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif"
 class="mx-auto mb-6 w-48 rounded-lg">
 
-<h1 id="question" class="text-3xl font-bold text-pink-600 mb-4">
+<h1 id="question" class="text-3xl font-bold text-pink-600 mb-6">
 Adri, Will you be my Valentine? ❤️
 </h1>
 
@@ -80,10 +80,9 @@ document.addEventListener("click", () => {
   }
 });
 
-/* CORAZONES FLOTANDO */
+/* CORAZONES */
 function createHearts(){
   const container=document.getElementById("hearts");
-
   setInterval(()=>{
     const heart=document.createElement("div");
     heart.innerHTML="❤️";
@@ -91,32 +90,11 @@ function createHearts(){
     heart.style.left=Math.random()*100+"vw";
     heart.style.fontSize=(Math.random()*20+18)+"px";
     heart.style.animationDuration=(Math.random()*3+4)+"s";
-
     container.appendChild(heart);
     setTimeout(()=>heart.remove(),7000);
   },350);
 }
 createHearts();
-
-/* CUENTA REGRESIVA */
-function updateCountdown(){
-  const target=new Date("Feb 14, 2026 00:00:00").getTime();
-  const now=new Date().getTime();
-  const diff=target-now;
-
-  if(diff<=0){
-    document.getElementById("countdown").innerText="Hoy es nuestro día ❤️";
-    return;
-  }
-
-  const days=Math.floor(diff/(1000*60*60*24));
-  const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-
-  document.getElementById("countdown").innerText=
-  `Faltan ${days} días y ${hours} horas para nuestra cita 💕`;
-}
-setInterval(updateCountdown,1000);
-updateCountdown();
 
 /* BOTON NO ESCAPA */
 function moveButton(){
@@ -131,37 +109,58 @@ function launchConfetti(){
 confetti({particleCount:200,spread:120,origin:{y:0.6}});
 }
 
+/* CONTADOR (solo después del SI) */
+function startCountdown(){
+
+function updateCountdown(){
+  const target=new Date("Feb 14, 2026 16:00:00").getTime();
+  const now=new Date().getTime();
+  const diff=target-now;
+
+  if(diff<=0){
+    document.getElementById("countdown").innerText="Es hoy ❤️";
+    return;
+  }
+
+  const days=Math.floor(diff/(1000*60*60*24));
+  const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
+
+  document.getElementById("countdown").innerText=
+  `Faltan ${days} días, ${hours} horas y ${minutes} min para vernos 💕`;
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+}
+
 /* CLICK SI */
 function handleYesClick(){
 
 const musicStart=document.getElementById("musicStart");
 const musicQueen=document.getElementById("musicQueen");
 
-/* vibración celular */
+/* vibración */
 if(navigator.vibrate){
 navigator.vibrate([200,100,200]);
 }
 
-/* cambio música */
+/* música */
 musicStart.pause();
 musicStart.currentTime=0;
 musicQueen.play();
 musicQueen.volume=1;
 
-/* confetti */
+/* efectos */
 launchConfetti();
-
-/* zoom tarjeta */
 document.getElementById("card").style.transform="scale(1.08)";
-
-/* cambio fondo romántico */
 document.body.style.background="linear-gradient(180deg,#ff758c 0%,#ff2e63 100%)";
 
 /* mensaje */
 document.getElementById("question").innerText=
-"Entonces… oficialmente es una cita este 14 ❤️";
+"Entonces… oficialmente tenemos cita el 14 a las 4pm ❤️";
 
-/* gif nuevo */
+/* gif */
 document.getElementById("imageDisplay").src=
 "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
 
@@ -170,9 +169,12 @@ document.getElementById("noButton").style.display="none";
 
 /* cambiar botón */
 const btn=document.getElementById("yesButton");
-btn.innerText="Nos vemos el 14 mi amor ❤️";
+btn.innerText="Nos vemos ese día ❤️";
 btn.classList.replace("bg-green-500","bg-pink-500");
 btn.onclick=null;
+
+/* activar contador */
+startCountdown();
 }
 
 </script>
