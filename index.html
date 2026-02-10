@@ -11,6 +11,7 @@
         }
         #noButton {
             transition: all 0.2s ease;
+            position: relative;
         }
         body {
             touch-action: manipulation;
@@ -20,11 +21,11 @@
 <body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden" onclick="startMusic()">
     
     <audio id="romanticMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
     </audio>
     
     <audio id="queenMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     </audio>
 
     <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
@@ -47,15 +48,16 @@
         const queen = document.getElementById('queenMusic');
         let musicStarted = false;
 
+        // Inicia música romántica al primer clic o interacción
         function startMusic() {
             if (!musicStarted) {
-                romantic.play();
+                romantic.play().catch(e => console.log("Audio blocked by browser"));
                 musicStarted = true;
             }
         }
 
         function moveButton() {
-            startMusic(); // Asegura que la música suene si intenta dar al NO
+            startMusic(); 
             const noBtn = document.getElementById('noButton');
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
@@ -75,7 +77,7 @@
         }
 
         function handleYesClick() {
-            // Cambio a Queen
+            // Cambio de ambiente: De melódico a Queen
             romantic.pause();
             queen.play();
 
