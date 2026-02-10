@@ -1,94 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¡Feliz San Valentín, Adri!</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
-<style>
-/* Estilos adaptados para que no necesites imágenes externas */
-body {
-    background-color: #f0f0f0;
-    transition: all 0.5s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-}
-
-/* Colores de fondo según la respuesta */
-.no { background-color: #333 !important; color: white; }
-.yes { background-color: #ffcccc !important; }
-.maybe { background-color: #fff9c4 !important; }
-
-#image {
-    height: 400px;
-    width: 90%;
-    max-width: 600px;
-    background: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 100px;
-    text-align: center;
-}
-
-/* "Imágenes" usando emojis para que funcione de inmediato */
-.certificate::after { content: "📜❤️\n¡VALE POR UN CENA!"; font-size: 30px; display: block; }
-.certificate::before { content: "🏆"; }
-
-.benefits::after { content: "🎁🍫🌹\n¡Muchos regalos y amor!"; font-size: 30px; display: block; }
-.benefits::before { content: "💎"; }
-
-h1 { font-family: 'Arial', sans-serif; font-size: 24px; margin-top: 20px; }
-</style>
-</head>
-<body>
-
-<div id="image">
-    <h1 id="status">Esperando respuesta...</h1>
-</div>
-
-<script type="text/javascript">
-    var beardedBoo = function() {
-        var body = $('body'),
-            image = $("#image"),
-            statusText = $("#status");
-
-        body.removeClass("no").removeClass("maybe").removeClass("yes");
-        image.removeClass("benefits").removeClass("certificate");
-
-        var answer = prompt("Adri, ¿quieres ser mi San Valentín? (Escribe: Si, No o Tal vez)").toLowerCase();
-
-        if (answer == "si" || answer == 's' || answer == 'yes' || answer == 'y') {
-            body.addClass("yes");
-            image.addClass("certificate");
-            statusText.text("¡SIII! ¡Te amo Adri! ❤️");
-        } else if (answer == "tal vez" || answer == 't' || answer == 'maybe' || answer == 'm') {
-            body.addClass("maybe");
-            setTimeout(function() {
-                alert("Quizás no eres consciente de los muchos beneficios de aceptar...");
-                image.addClass("benefits");
-                statusText.text("Piénsalo bien... 👀");
-                setTimeout(beardedBoo, 3000);
-            }, 200);
-        } else {
-            body.addClass("no");
-            statusText.text("¿Cómo que no? 💔");
-            setTimeout(function() {
-                alert("Dime que no es cierto. Por favor, intenta de nuevo.");
-                beardedBoo();
-            }, 200);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
         }
-    }
-    
-    // Inicia la pregunta después de un breve momento
-    setTimeout(beardedBoo, 1000);
-</script>
+        #noButton {
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden">
+    <div class="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-md">
+        <img id="imageDisplay" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWdtcnp4dzZ3bm5pZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute bear" class="mx-auto mb-6 w-48">
+        <h1 class="text-3xl font-bold text-pink-600 mb-8" id="question">Will you be my Valentine, Adri? ❤️</h1>
+        
+        <div class="flex gap-4 justify-center items-center h-20">
+            <button id="yesButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition hover:scale-110" onclick="handleYesClick()">
+                Yes!
+            </button>
+            <button id="noButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg" onmouseover="moveButton()">
+                No
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - document.getElementById('noButton').offsetWidth);
+            const y = Math.random() * (window.innerHeight - document.getElementById('noButton').offsetHeight);
+            document.getElementById('noButton').style.left = `${x}px`;
+            document.getElementById('noButton').style.top = `${y}px`;
+        }
+
+        function handleYesClick() {
+            document.getElementById('question').innerText = "¡SIII! Nos vemos el 14 ❤️";
+            document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v1.Y2lkPTc5MGI3NjExYm95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3KC2jK2FeGvXg3zH1V/giphy.gif";
+            document.getElementById('noButton').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
