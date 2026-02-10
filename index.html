@@ -10,7 +10,6 @@
             background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
         }
         #noButton {
-            position: absolute;
             transition: all 0.2s ease;
         }
         body {
@@ -19,17 +18,17 @@
     </style>
 </head>
 <body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden">
-    <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
         <img id="imageDisplay" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Bear" class="mx-auto mb-6 w-48 rounded-lg">
         
         <h1 class="text-3xl font-bold text-pink-600 mb-10" id="question">Will you be my Valentine, Adri? ❤️</h1>
         
-        <div class="flex flex-row gap-4 items-center justify-center min-h-[100px] relative">
-            <button id="yesButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition hover:scale-110 z-10" onclick="handleYesClick()">
+        <div id="buttonsContainer" class="flex flex-row gap-4 items-center justify-center min-h-[100px]">
+            <button id="yesButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition hover:scale-110" onclick="handleYesClick()">
                 Yes
             </button>
             
-            <button id="noButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg z-20 whitespace-nowrap" onmouseover="moveButton()" onclick="moveButton()">
+            <button id="noButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg whitespace-nowrap" onmouseover="moveButton()" onclick="moveButton()">
                 No
             </button>
         </div>
@@ -37,13 +36,17 @@
 
     <script>
         function moveButton() {
-            // El texto del botón de No cambia a la frase que querías al intentar clickearlo
             const noBtn = document.getElementById('noButton');
+            
+            // Cambia el texto al intentar clickearlo
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "14px";
             noBtn.style.padding = "10px 20px";
+            
+            // Lo sacamos del flujo normal para que empiece a saltar
+            noBtn.style.position = "absolute";
 
-            // Calculamos posiciones aleatorias seguras
+            // Calculamos posiciones aleatorias seguras en toda la pantalla
             const padding = 100;
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
@@ -51,26 +54,23 @@
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
             
-            // El botón de Yes crece
+            // El botón de Yes crece para ser el protagonista
             const yesBtn = document.getElementById('yesButton');
             const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = `${currentSize + 2}px`;
-            yesBtn.style.padding = `${parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 2}px ${parseFloat(window.getComputedStyle(yesBtn).paddingLeft) + 5}px`;
+            yesBtn.style.fontSize = `${currentSize + 3}px`;
+            yesBtn.style.padding = `${parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 3}px ${parseFloat(window.getComputedStyle(yesBtn).paddingLeft) + 6}px`;
         }
 
         function handleYesClick() {
             document.getElementById('question').innerText = "YAY!!! I love you Adri! ❤️";
             document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v1.Y2lkPTc5MGI3NjExYm95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3KC2jK2FeGvXg3zH1V/giphy.gif";
             
-            // Ocultamos el botón de No
+            // Ocultamos el botón de No y centramos el Yes
             document.getElementById('noButton').style.display = 'none';
-            
-            // Mensaje final en el botón de Sí
-            const btn = document.getElementById('yesButton');
-            btn.innerText = "See you on the 14th! 😘";
-            btn.classList.replace('bg-green-500', 'bg-pink-500');
-            btn.style.fontSize = "20px";
-            btn.onclick = null;
+            const yesBtn = document.getElementById('yesButton');
+            yesBtn.innerText = "See you on the 14th! 😘";
+            yesBtn.classList.replace('bg-green-500', 'bg-pink-500');
+            yesBtn.onclick = null;
         }
     </script>
 </body>
