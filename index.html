@@ -18,8 +18,15 @@ body { overflow:hidden; }
 
 <body id="body" class="day-bg h-screen flex items-center justify-center">
 
-<div id="player-romantic" style="display:none"></div>
-<div id="player-queen" style="display:none"></div>
+<!-- AUDIO -->
+<audio id="musicStart" autoplay loop>
+  <source src="Ed Sheeran - photograph   sub español.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="musicQueen" loop>
+  <source src="Queen - We Are The Champions (Official Video) (mp3cut.net).mp3" type="audio/mpeg">
+</audio>
+
 <div id="hearts"></div>
 
 <div id="card" class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4">
@@ -49,44 +56,18 @@ No deseyo
 </div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
 
-let playerRomantic, playerQueen;
-let musicUnlocked = false;
+/* ACTIVAR MÚSICA AL PRIMER CLICK (los navegadores bloquean autoplay con sonido) */
+let audioUnlocked = false;
 
-/* YOUTUBE */
-function onYouTubeIframeAPIReady() {
-
-playerRomantic = new YT.Player('player-romantic', {
-height:'0', width:'0',
-videoId:'nSDgHBxUbVQ',
-playerVars:{ autoplay:1, controls:0, mute:1 },
-events:{
-'onReady': e=>{
-e.target.playVideo(); // empieza en mute automáticamente
-}
-}
-});
-
-playerQueen = new YT.Player('player-queen', {
-height:'0', width:'0',
-videoId:'04854XqcfCY',
-playerVars:{ autoplay:0, controls:0 },
-events:{
-'onReady': e=> e.target.setVolume(100)
-}
-});
-}
-
-/* ACTIVAR SONIDO AL PRIMER CLICK */
-document.addEventListener("click", ()=>{
-if(!musicUnlocked && playerRomantic){
-playerRomantic.unMute();
-playerRomantic.setVolume(100);
-musicUnlocked = true;
-}
+document.addEventListener("click", () => {
+  if (!audioUnlocked) {
+    const music = document.getElementById("musicStart");
+    music.volume = 1;
+    music.play();
+    audioUnlocked = true;
+  }
 });
 
 /* BOTÓN NO ESCAPA */
@@ -105,14 +86,17 @@ confetti({particleCount:180,spread:100,origin:{y:0.6}});
 /* CLICK SI */
 function handleYesClick(){
 
-if(playerRomantic) playerRomantic.stopVideo();
+const musicStart = document.getElementById("musicStart");
+const musicQueen = document.getElementById("musicQueen");
 
-if(playerQueen){
-playerQueen.playVideo();
-playerQueen.unMute();
-playerQueen.setVolume(100);
-}
+/* cambiar música */
+musicStart.pause();
+musicStart.currentTime = 0;
 
+musicQueen.play();
+musicQueen.volume = 1;
+
+/* efectos */
 launchConfetti();
 
 document.getElementById("question").innerText="Sabía que dirías que sí ❤️";
