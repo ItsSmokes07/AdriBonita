@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine? ❤️</title>
+    <title>Adri, Will you be my Valentine? ❤️</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .gradient-bg {
             background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
         }
-        /* El botón de No ahora tiene un ID específico para que no rompa el diseño inicial */
         #noButton {
             transition: all 0.2s ease;
         }
@@ -22,11 +21,11 @@
     <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
         <img id="imageDisplay" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Bear" class="mx-auto mb-6 w-48 rounded-lg">
         
-        <h1 class="text-3xl font-bold text-pink-600 mb-10" id="question">Will you be my Valentine, Adri? ❤️</h1>
+        <h1 class="text-3xl font-bold text-pink-600 mb-10" id="question">Adri, Will you be my Valentine? ❤️</h1>
         
         <div id="buttonsContainer" class="flex flex-row gap-6 items-center justify-center min-h-[100px]">
             <button id="yesButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg transform transition hover:scale-110" onclick="handleYesClick()">
-                Yes bonito
+                Sí, eres fino
             </button>
             
             <button id="noButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg whitespace-nowrap" onmouseover="moveButton()" onclick="moveButton()">
@@ -39,15 +38,15 @@
         function moveButton() {
             const noBtn = document.getElementById('noButton');
             
-            // Cambia el texto a la frase larga al intentar clickearlo
+            // Texto cuando intenta darle al NO
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
             noBtn.style.padding = "8px 16px";
             
-            // Ahora sí lo volvemos absoluto para que escape
+            // Posicionamiento absoluto para que escape
             noBtn.style.position = "absolute";
 
-            // Calculamos posiciones aleatorias en toda la ventana
+            // Cálculo de movimiento aleatorio
             const padding = 100;
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
@@ -55,7 +54,7 @@
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
             
-            // Hacemos que el Yes crezca cada vez que ella falla
+            // El botón de SÍ crece
             const yesBtn = document.getElementById('yesButton');
             const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
             yesBtn.style.fontSize = `${currentSize + 3}px`;
@@ -63,15 +62,22 @@
         }
 
         function handleYesClick() {
+            // Cambio de textos finales
             document.getElementById('question').innerText = "YAY!!! See you on the 14th! ❤️";
-            document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v1.Y2lkPTc5MGI3NjExYm95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3KC2jK2FeGvXg3zH1V/giphy.gif";
             
-            // Ocultamos el botón de No y centramos la victoria
+            // Imagen de celebración (GIF de besos/corazones)
+            // Si quieres poner tu propia imagen, cambia el link de abajo
+            document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/iCVz2SSs1L9RYatXMN/giphy.gif";
+            
+            // Ocultar botón No
             document.getElementById('noButton').style.display = 'none';
-            const yesBtn = document.getElementById('yesButton');
-            yesBtn.innerText = "I love you Adri! 😘";
-            yesBtn.classList.replace('bg-green-500', 'bg-pink-500');
-            yesBtn.onclick = null;
+            
+            // Personalizar botón Sí al final
+            const btn = document.getElementById('yesButton');
+            btn.innerText = "I love you Adri! 😘";
+            btn.classList.replace('bg-green-500', 'bg-pink-500');
+            btn.style.fontSize = "24px";
+            btn.onclick = null;
         }
     </script>
 </body>
