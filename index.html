@@ -18,6 +18,10 @@
     </style>
 </head>
 <body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden">
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
         <img id="imageDisplay" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp6NjB4Z3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Bear" class="mx-auto mb-6 w-48 rounded-lg">
         
@@ -27,7 +31,6 @@
             <button id="yesButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg transform transition hover:scale-110" onclick="handleYesClick()">
                 Sí, eres fino
             </button>
-            
             <button id="noButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg whitespace-nowrap" onmouseover="moveButton()" onclick="moveButton()">
                 No deseyo
             </button>
@@ -35,18 +38,20 @@
     </div>
 
     <script>
+        // Función para activar la música al primer toque
+        function playMusic() {
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Esperando interacción para sonar"));
+        }
+
         function moveButton() {
+            playMusic(); // Intenta sonar la música cuando intenta darle al No
             const noBtn = document.getElementById('noButton');
-            
-            // Texto cuando intenta darle al NO
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
             noBtn.style.padding = "8px 16px";
-            
-            // Posicionamiento absoluto para que escape
             noBtn.style.position = "absolute";
 
-            // Cálculo de movimiento aleatorio
             const padding = 100;
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
@@ -54,7 +59,6 @@
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
             
-            // El botón de SÍ crece
             const yesBtn = document.getElementById('yesButton');
             const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
             yesBtn.style.fontSize = `${currentSize + 3}px`;
@@ -62,21 +66,19 @@
         }
 
         function handleYesClick() {
-            // Cambio de textos finales
+            playMusic(); // Asegura que la música suene al aceptar
             document.getElementById('question').innerText = "YAY!!! See you on the 14th! ❤️";
             
-            // Imagen de celebración (GIF de besos/corazones)
-            // Si quieres poner tu propia imagen, cambia el link de abajo
-            document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/iCVz2SSs1L9RYatXMN/giphy.gif";
+            // Nueva imagen de victoria (Gatitos tiernos)
+            document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
             
-            // Ocultar botón No
             document.getElementById('noButton').style.display = 'none';
             
-            // Personalizar botón Sí al final
             const btn = document.getElementById('yesButton');
-            btn.innerText = "I love you Adri! 😘";
+            // Nuevo mensaje final solicitado
+            btn.innerText = "Nos vemos el 14 mi amor:)";
             btn.classList.replace('bg-green-500', 'bg-pink-500');
-            btn.style.fontSize = "24px";
+            btn.style.fontSize = "22px";
             btn.onclick = null;
         }
     </script>
