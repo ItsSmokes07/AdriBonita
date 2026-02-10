@@ -18,8 +18,11 @@
     </style>
 </head>
 <body class="gradient-bg h-screen flex flex-col items-center justify-center m-0 overflow-hidden">
-    <audio id="bgMusic" loop>
+    <audio id="romanticMusic" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="victoryMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     </audio>
 
     <div class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4 relative">
@@ -38,14 +41,16 @@
     </div>
 
     <script>
-        const music = document.getElementById('bgMusic');
+        const romanticMusic = document.getElementById('romanticMusic');
+        const victoryMusic = document.getElementById('victoryMusic');
 
-        function playInitialMusic() {
-            music.play().catch(() => {});
+        // La música romántica empieza con cualquier interacción
+        function startMusic() {
+            romanticMusic.play().catch(() => {});
         }
 
         function moveButton() {
-            playInitialMusic();
+            startMusic();
             const noBtn = document.getElementById('noButton');
             noBtn.innerText = "No deseyo, duplícaselo a la siguiente persona";
             noBtn.style.fontSize = "12px";
@@ -66,11 +71,11 @@
         }
 
         function handleYesClick() {
-            // Cambiar música a una más alegre al aceptar
-            music.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3";
-            music.play();
+            // Cambio de música: Pausa romántica, inicia victoria
+            romanticMusic.pause();
+            victoryMusic.play();
 
-            document.getElementById('question').innerHTML = "Excelente, tu si sabes elegir bien 🫡";
+            document.getElementById('question').innerText = "Excelente, tu si sabes elegir bien 🫡";
             document.getElementById('imageDisplay').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3Ym5mZ3RreHh3ZW95ZzZueXh3ZW95ZzZueXh3ZW95ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif";
             
             document.getElementById('noButton').style.display = 'none';
@@ -82,8 +87,8 @@
             btn.onclick = null;
         }
 
-        // Activar música con cualquier interacción inicial
-        document.body.addEventListener('click', playInitialMusic, { once: true });
+        // Activa el ambiente romántico al primer clic en cualquier lado
+        document.body.addEventListener('click', startMusic, { once: true });
     </script>
 </body>
 </html>
